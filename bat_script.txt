@@ -1,0 +1,23 @@
+@echo off
+setlocal enabledelayedexpansion
+
+REM Get all deployment names in the current namespace
+for /f "tokens=*" %%D in ('oc get deployments -o jsonpath^="{.items[*].metadata.name}"') do (
+    set "deployment=%%D"
+    
+    REM Fetch pods count for deployment
+    for /f %%P in ('oc get pods -l app=!deployment! -o jsonpath^="{.items[*].metadata.name}" ^| find /c /v ""') do (
+        set "podsCount=%%P"
+    )
+
+    REM Try to fetch execution URL from annotation or label; replace PATH_TO_EXECUTION_URL accordingly
+    set "executionURL=N/A"
+    for /f "tokens=*" %%E in ('oc get deployment !deployment! -o jsonpath^="{.metadata.annotations.executionURL}"') do (
+        set "executionURL=%%E"
+    )
+
+    REM Output CSV line: service_name,execution_url,pod_count
+    echo !deployment!,!executionURL!,!podsCount!
+)
+endlocal
+

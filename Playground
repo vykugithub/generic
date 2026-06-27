@@ -1,0 +1,445 @@
+Developer Integration Playground (MVP) - System Design & Implementation Prompt
+
+Objective
+
+Design and implement an MVP of a Developer Integration Playground for local integration and end-to-end testing of Spring Boot microservices.
+
+This is NOT a production platform. It is an internal developer productivity tool that allows developers to spin up complete integration environments with minimal effort.
+
+The focus is simplicity, extensibility and rapid development.
+
+⸻
+
+Core Problem
+
+A typical Spring Boot service depends on:
+
+* Multiple external REST APIs
+* Kafka
+* Databases
+* Redis
+* File systems
+* Other Spring Boot services
+
+Developers spend significant time:
+
+* configuring local environments
+* starting dependencies
+* creating test data
+* mocking APIs
+* inspecting Kafka topics
+* checking database changes
+* switching between IntelliJ, Postman, Kafka UI, Docker, logs and database tools
+
+The playground should consolidate these activities into a single tool.
+
+⸻
+
+Important Constraints
+
+DO NOT modify existing Spring Boot applications.
+
+No code changes.
+
+No additional dependencies.
+
+No AOP.
+
+No Java Agent.
+
+No OpenTelemetry requirement.
+
+No framework changes.
+
+The playground must work with existing applications exactly as they are.
+
+⸻
+
+High-Level Concept
+
+The Playground acts as an orchestrator, not part of the application.
+
+Responsibilities:
+
+* provision infrastructure
+* generate runtime configuration
+* launch services
+* configure mock APIs
+* manage embedded Kafka
+* manage databases
+* provide unified visibility
+
+Applications simply consume the generated configuration.
+
+⸻
+
+Technology Choice
+
+Backend:
+
+* Python
+* FastAPI
+
+Frontend:
+
+* React
+* Vite
+* TypeScript
+
+Storage:
+
+* SQLite
+
+Infrastructure:
+
+* Docker Compose
+
+Real-time:
+
+* WebSockets
+
+Keep dependencies minimal.
+
+⸻
+
+Primary Features
+
+1. Workspace
+
+A workspace represents one integration environment.
+
+It contains:
+
+* services
+* infrastructure
+* mock configuration
+* environment variables
+* scenarios
+* test data
+
+Workspace should be saved as YAML.
+
+Example:
+
+workspace.yaml
+
+⸻
+
+2. Service Launcher
+
+Support launching multiple Spring Boot applications.
+
+Each service should define:
+
+* name
+* location
+* Maven/Gradle command
+* debug port
+* application profile
+* environment variables
+
+The playground should generate runtime configuration automatically.
+
+Developer should still debug normally from IntelliJ or VSCode.
+
+⸻
+
+3. Infrastructure Management
+
+Support:
+
+* Embedded Kafka
+* PostgreSQL
+* Redis
+* MockServer
+
+Infrastructure should start automatically.
+
+Support using either:
+
+Embedded service
+
+or
+
+Real external service
+
+Example:
+
+Customer API -> Mock
+
+Payment API -> Real
+
+Kafka -> Embedded
+
+Oracle -> Real
+
+⸻
+
+4. Mock Manager
+
+Provide visual CRUD for mock APIs.
+
+Support:
+
+* path
+* method
+* response
+* status
+* delay
+* timeout
+* account-based matching
+* header matching
+
+Store mocks as JSON/YAML.
+
+No code generation.
+
+⸻
+
+5. Test Data Manager
+
+Support:
+
+* SQL scripts
+* CSV
+* JSON
+
+Operations:
+
+* import
+* reset
+* seed
+
+⸻
+
+6. Kafka Manager
+
+Support:
+
+* create topic
+* delete topic
+* publish message
+* consume messages
+* replay messages
+
+Display:
+
+* headers
+* payload
+* timestamp
+* offset
+
+⸻
+
+7. Database Viewer
+
+Simple SQL viewer.
+
+Browse tables.
+
+Execute queries.
+
+Refresh data.
+
+No advanced admin functionality.
+
+⸻
+
+8. Log Viewer
+
+Aggregate logs from:
+
+* Spring services
+* Docker containers
+
+Support:
+
+* live streaming
+* filtering
+* search
+* correlation id filtering
+
+⸻
+
+9. Execution Timeline
+
+Provide a chronological event timeline.
+
+Example:
+
+REST Request
+
+↓
+
+Customer API
+
+↓
+
+Kafka Published
+
+↓
+
+Consumer Started
+
+↓
+
+Fraud API
+
+↓
+
+Database Updated
+
+↓
+
+Response Returned
+
+Simple timeline.
+
+No animations required.
+
+⸻
+
+Plugin Architecture
+
+Everything should be plugin based.
+
+The core should know nothing about Kafka, Spring Boot or PostgreSQL.
+
+Plugins expose capabilities.
+
+Examples:
+
+SpringBoot Plugin
+
+Kafka Plugin
+
+Database Plugin
+
+Mock Plugin
+
+Docker Plugin
+
+Log Plugin
+
+Workspace Plugin
+
+Plugin interface should be simple.
+
+initialize()
+
+configure()
+
+start()
+
+stop()
+
+cleanup()
+
+observe()
+
+Plugins communicate through an internal event bus.
+
+⸻
+
+UI Requirements
+
+Keep UI intentionally simple.
+
+Pages:
+
+Workspace
+
+Services
+
+Infrastructure
+
+Mocks
+
+Kafka
+
+Database
+
+Logs
+
+Timeline
+
+Settings
+
+Material UI preferred.
+
+No drag-and-drop canvas.
+
+No complex visualizations.
+
+Functionality over appearance.
+
+⸻
+
+Non Goals
+
+Do NOT implement:
+
+Authentication
+
+Authorization
+
+Cloud deployment
+
+Kubernetes
+
+Distributed tracing
+
+Replay engine
+
+AI
+
+Fancy diagrams
+
+Complex workflow designer
+
+Enterprise scalability
+
+Production security
+
+Multi-user collaboration
+
+⸻
+
+Design Principles
+
+* Simple
+* Extensible
+* Plugin-based
+* Configuration driven
+* Language agnostic
+* Docker-first
+* Fast startup
+* Easy debugging
+* Minimal dependencies
+
+⸻
+
+Expected Deliverables
+
+1. Complete project structure
+2. Backend architecture
+3. Frontend architecture
+4. Plugin framework
+5. Workspace model
+6. Docker orchestration
+7. Service launcher
+8. Mock manager
+9. Kafka manager
+10. Database viewer
+11. Log viewer
+12. Timeline implementation
+13. Configuration generation
+14. Sample workspace
+15. End-to-end runnable MVP
+
+The code should be clean, modular and extensible rather than over-engineered.
+
+Favor maintainability and developer productivity over enterprise features.
+
+
+Implementation strategy: Build this incrementally in phases. At the end of each phase, the project must compile and be runnable. Prioritize working software over completeness. Do not generate placeholder code. Produce production-quality code for each implemented feature before moving to the next phase.
